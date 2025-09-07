@@ -6,11 +6,11 @@
  */
 
 /**
- * Add postMessage support for site title and description for the Theme Customizer.
+ * Add postMessage support for site title, description, and header text color.
  *
  * @param WP_Customize_Manager $wp_customize Theme Customizer object.
  */
-function elica_underscores_customize_register( $wp_customize ) {
+function elica_underscores_customize_register( WP_Customize_Manager $wp_customize ) : void {
 	$wp_customize->get_setting( 'blogname' )->transport         = 'postMessage';
 	$wp_customize->get_setting( 'blogdescription' )->transport  = 'postMessage';
 	$wp_customize->get_setting( 'header_textcolor' )->transport = 'postMessage';
@@ -18,44 +18,47 @@ function elica_underscores_customize_register( $wp_customize ) {
 	if ( isset( $wp_customize->selective_refresh ) ) {
 		$wp_customize->selective_refresh->add_partial(
 			'blogname',
-			array(
+			[
 				'selector'        => '.site-title a',
 				'render_callback' => 'elica_underscores_customize_partial_blogname',
-			)
+			]
 		);
+
 		$wp_customize->selective_refresh->add_partial(
 			'blogdescription',
-			array(
+			[
 				'selector'        => '.site-description',
 				'render_callback' => 'elica_underscores_customize_partial_blogdescription',
-			)
+			]
 		);
 	}
 }
 add_action( 'customize_register', 'elica_underscores_customize_register' );
 
 /**
- * Render the site title for the selective refresh partial.
- *
- * @return void
+ * Render the site title for Selective Refresh.
  */
-function elica_underscores_customize_partial_blogname() {
+function elica_underscores_customize_partial_blogname() : void {
 	bloginfo( 'name' );
 }
 
 /**
- * Render the site tagline for the selective refresh partial.
- *
- * @return void
+ * Render the site description/tagline for Selective Refresh.
  */
-function elica_underscores_customize_partial_blogdescription() {
+function elica_underscores_customize_partial_blogdescription() : void {
 	bloginfo( 'description' );
 }
 
 /**
- * Binds JS handlers to make Theme Customizer preview reload changes asynchronously.
+ * Enqueue JS handlers for Theme Customizer preview reload.
  */
-function elica_underscores_customize_preview_js() {
-	wp_enqueue_script( 'elica-underscores-customizer', get_template_directory_uri() . '/js/customizer.js', array( 'customize-preview' ), _S_VERSION, true );
+function elica_underscores_customize_preview_js() : void {
+	wp_enqueue_script(
+		'elica-underscores-customizer',
+		get_template_directory_uri() . '/js/customizer.js',
+		[ 'customize-preview' ],
+		wp_get_theme()->get( 'Version' ),
+		true
+	);
 }
 add_action( 'customize_preview_init', 'elica_underscores_customize_preview_js' );

@@ -2,8 +2,7 @@
 /**
  * The template for displaying comments
  *
- * This is the template that displays the area of the page that contains both the current comments
- * and the comment form.
+ * This template displays the current comments and the comment form.
  *
  * @link https://developer.wordpress.org/themes/basics/template-hierarchy/
  *
@@ -12,8 +11,7 @@
 
 /*
  * If the current post is protected by a password and
- * the visitor has not yet entered the password we will
- * return early without loading the comments.
+ * the visitor has not yet entered the password we return early without loading comments.
  */
 if ( post_password_required() ) {
 	return;
@@ -23,23 +21,31 @@ if ( post_password_required() ) {
 <div id="comments" class="comments-area">
 
 	<?php
-	// You can start editing here -- including this comment!
+	// Check if there are comments to display.
 	if ( have_comments() ) :
+		$elica_underscores_comment_count = get_comments_number();
 		?>
 		<h2 class="comments-title">
 			<?php
-			$elica_underscores_comment_count = get_comments_number();
-			if ( '1' === $elica_underscores_comment_count ) {
+			if ( 1 === $elica_underscores_comment_count ) {
 				printf(
-					/* translators: 1: title. */
+					/* translators: 1: Post title */
 					esc_html__( 'One thought on &ldquo;%1$s&rdquo;', 'elica-underscores' ),
 					'<span>' . wp_kses_post( get_the_title() ) . '</span>'
 				);
 			} else {
-				printf( 
-					/* translators: 1: comment count number, 2: title. */
-					esc_html( _nx( '%1$s thought on &ldquo;%2$s&rdquo;', '%1$s thoughts on &ldquo;%2$s&rdquo;', $elica_underscores_comment_count, 'comments title', 'elica-underscores' ) ),
-					number_format_i18n( $elica_underscores_comment_count ), // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				printf(
+					/* translators: 1: Number of comments, 2: Post title */
+					esc_html(
+						_nx(
+							'%1$s thought on &ldquo;%2$s&rdquo;',
+							'%1$s thoughts on &ldquo;%2$s&rdquo;',
+							$elica_underscores_comment_count,
+							'comments title',
+							'elica-underscores'
+						)
+					),
+					number_format_i18n( $elica_underscores_comment_count ), // Escaped by esc_html() above.
 					'<span>' . wp_kses_post( get_the_title() ) . '</span>'
 				);
 			}
@@ -54,23 +60,25 @@ if ( post_password_required() ) {
 				array(
 					'style'      => 'ol',
 					'short_ping' => true,
+					'avatar_size'=> 48,
 				)
 			);
 			?>
 		</ol><!-- .comment-list -->
 
-		<?php
-		the_comments_navigation();
+		<?php the_comments_navigation(); ?>
 
-		// If comments are closed and there are comments, let's leave a little note, shall we?
+		<?php
+		// If comments are closed, but there are comments, display a notice.
 		if ( ! comments_open() ) :
 			?>
 			<p class="no-comments"><?php esc_html_e( 'Comments are closed.', 'elica-underscores' ); ?></p>
 			<?php
 		endif;
 
-	endif; // Check for have_comments().
+	endif; // End have_comments() check.
 
+	// Display the comment form.
 	comment_form();
 	?>
 

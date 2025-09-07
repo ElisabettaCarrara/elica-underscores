@@ -13,7 +13,7 @@ A starter theme called Elica Underscores.
 
 == Description ==
 
-Elica Underscores is a starter theme for ClassicPress
+Elica Underscores theme for ClassicPress
 
 == Installation ==
 
@@ -29,7 +29,7 @@ Elica Underscores includes support for Classic Commerce.
 
 == Changelog ==
 
-= 1.0 - September 7, 2015 =
+= 1.0 - September 2015 =
 * Initial release
 
 == Credits ==
