@@ -741,6 +741,14 @@ textarea {
 
 /* Posts and pages
 --------------------------------------------- */
+
+.site-main--fullwidth {
+    width: 100%;
+    max-width: none;
+    margin: 0 auto;
+    padding: 2em 0;
+}
+
 .sticky {
 	display: block;
 }
